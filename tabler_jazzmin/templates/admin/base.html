@@ -1,0 +1,354 @@
+{% load i18n static jazzmin admin_urls compress %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
+{% get_jazzmin_settings request as jazzmin_settings %}
+{% get_jazzmin_ui_tweaks as jazzmin_ui %}
+
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
+<head>
+    <meta charset="utf-8">
+    {#    <meta name="viewport" content="width=device-width, initial-scale=1">#}
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <!--  Prevent admin panel being crawled by search engines -->
+    <meta name="robots" content="none, noarchive">
+
+    <title>
+        {% block title %}{% if title %}{{ title }} | {% endif %} {{ jazzmin_settings.site_title }}{% endblock %}</title>
+
+    {% compress css %}
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler.min.css">
+
+
+        <link rel="stylesheet"
+              href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler-flags.min.css">
+        <link rel="stylesheet"
+              href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler-payments.min.css">
+        <link rel="stylesheet"
+              href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler-vendors.min.css">
+
+
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+        {#        <link rel="stylesheet" href="{% static "vendor/fontawesome-free/css/all.min.css" %}">#}
+
+        <!-- Bootstrap and adminLTE -->
+        {#    <link rel="stylesheet" href="{% static "vendor/adminlte/css/adminlte.min.css" %}" id="adminlte-css">#}
+
+        <!-- Bootswatch theme -->
+        {#    {% if jazzmin_ui.theme.name != 'default' %}#}
+        {#        <link rel="stylesheet" href="{{ jazzmin_ui.theme.src }}" id="jazzmin-theme"/>#}
+        {#    {% endif %}#}
+
+        {#    {% if jazzmin_ui.dark_mode_theme %}#}
+        {#        <link rel="stylesheet" href="{{ jazzmin_ui.dark_mode_theme.src }}" id="jazzmin-dark-mode-theme"#}
+        {#              media="(prefers-color-scheme: dark)"/>#}
+        {#    {% endif %}#}
+
+        <!-- Custom fixes for django -->
+        <link rel="stylesheet" href="{% static "jazzmin/css/main.css" %}">
+
+
+    {% endcompress %}
+
+    {% if jazzmin_settings.custom_css %}
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="{% static jazzmin_settings.custom_css %}">
+    {% endif %}
+
+    <!-- favicons -->
+    <link rel="shortcut icon" href="{% static jazzmin_settings.site_icon %}" type="image/png">
+    <link rel="icon" href="{% static jazzmin_settings.site_icon %}" sizes="32x32" type="image/png">
+
+    {% if jazzmin_settings.use_google_fonts_cdn %}
+        <!-- Google Font: Source Sans Pro -->
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    {% endif %}
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet"
+          type="text/css">
+    {% compress css %}
+        {#        <link href="{% static 'limitless_admin/global_assets/css/icons/icomoon/styles.min.css' %}" rel="stylesheet"#}
+        {#              type="text/css">#}
+
+
+    {% endcompress %}
+
+    {% compress js %}
+    {% endcompress %}
+
+    {% block extrastyle %}
+
+    {% endblock %}
+    {% block extrahead %} {% endblock %}
+</head>
+<body class="hold-transition{% if not jazzmin_settings.show_sidebar %} no-sidebar{% else %} sidebar-mini{% endif %} {% sidebar_status request %} {% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %} {{ jazzmin_ui.body_classes }}"
+      data-admin-utc-offset="{% now "Z" %}">
+
+{% if not is_popup %}
+    {% block main_nav_bar %}
+        {#        {% include limitless_settings.main_nav_bar_template %}#}
+    {% endblock %}
+    {% block sidebar %}
+
+        {% if jazzmin_settings.show_sidebar %}
+
+        {% endif %}
+
+    {% endblock %}
+{% endif %}
+
+
+
+<div class="page">
+    {% block main_side_bar %}
+        {#        {% include 'limitless/main_sidebar.html' %}#}
+    {% endblock %}
+    <div class="page-wrapper " {% if is_popup %}style="margin-left:0px; padding-top: 20px;"{% endif %}>
+        <div class="content-inner">
+            {% block page_content %}
+                {% block page_header %}
+                    {% if not is_popup %}
+                        {% block page_title_container %}
+                            <div class="page-header d-print-none">
+                                <div class="container-xl">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col">
+                                            <h2 class="page-title">
+                                                {% block page_title %}
+                                                    <h4>{{ title }}</h4>
+                                                    {#                                    Vertical layout#}
+                                                {% endblock %}
+                                            </h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endblock %}
+
+                        <div class="page-header page-header-light __page-header-static">
+
+
+                            <div class="page-header-content header-elements-lg-inline">
+                                <div class="page-title">
+                                    {#                                    {% block content_title %}#}
+                                    {% if title %}
+                                        <h4>{{ title }}</h4>
+                                    {% endif %}
+                                    {#                                    {% endblock %}#}
+                                </div>
+
+                                <div class="header-elements d-none">
+                                    {% block object-tools %}
+
+                                        <div class="d-flex justify-content-center">
+                                            {% block object-tools-items %}
+                                            {% endblock %}
+                                        </div>
+                                    {% endblock %}
+                                </div>
+                            </div>
+
+                            <div class="breadcrumb-line breadcrumb-line-light header-elements-sm-inline">
+                                <div class="d-flex">
+                                    {% block breadcrumbs %}
+
+                                        <div class="breadcrumb">
+                                            <a href="{% url 'admin:index' %}" class="breadcrumb-item">
+                                                <i class="icon-home2 mx-2"></i> {% trans 'Home' %}</a>
+                                        </div>
+
+                                    {% endblock %}
+                                </div>
+                            </div>
+
+
+                            <!-- /page header content -->
+
+
+                            <!-- Second navbar -->
+
+                            <!-- /second navbar -->
+
+
+                            <!-- Floating menu -->
+
+                            <!-- /floating menu -->
+
+                        </div>
+                        {#            <div class="content-header">#}
+                        {#                <div class="container-fluid">#}
+                        {#                    <div class="row mb-2">#}
+                        {#                        <div class="col-auto col-sm-3">#}
+                        {#                            <h1 class="m-0">{% block content_title %}{% endblock %}</h1>#}
+                        {#                        </div>#}
+                        {#                        <div class="col-auto col-sm-9">#}
+                        {#                            {% block breadcrumbs %}{% endblock %}#}
+                        {#                        </div>#}
+                        {#                    </div>#}
+                        {#                </div>#}
+                        {#            </div>#}
+                    {% endif %}
+                {% endblock %}
+
+                <div class="{% block content_css_class %}content{% endblock %}">
+
+                    <div class="_container-fluid">
+                        <section id="content" class="">
+                            {% block messages %}
+                                {% for message in messages %}
+                                    {% if message.tags == 'success' %}
+                                        <div class="alert alert-success alert-dismissible">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                                                ×
+                                            </button>
+                                            <i class="icon fa fa-check"></i>{{ message|capfirst }}
+                                        </div>
+                                    {% elif message.tags == 'error' %}
+                                        <div class="alert alert-danger alert-dismissible">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                                                ×
+                                            </button>
+                                            <i class="icon fa fa-ban"></i>{{ message|capfirst }}
+                                        </div>
+                                    {% elif message.tags == 'warning' %}
+                                        <div class="alert alert-warning alert-dismissible">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                                                ×
+                                            </button>
+                                            <i class="icon fa fa-exclamation-triangle"></i>{{ message|capfirst }}
+                                        </div>
+                                    {% elif message.tags == 'info' %}
+                                        <div class="alert alert-info alert-dismissible">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                                                ×
+                                            </button>
+                                            <i class="icon fa fa-info"></i>{{ message|capfirst }}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endblock messages %}
+                            {% block content_outer %}
+                                <div class="content-start">
+                                    {% block content %} {% endblock %}
+                                </div>
+                            {% endblock content_outer %}
+                        </section>
+                    </div>
+                </div>
+
+
+            {% endblock %}
+        </div>
+    </div>
+
+</div>
+
+
+{% block footer %}
+    {% if not is_popup %}
+        {#        <footer class="main-footer {{ jazzmin_ui.footer_classes }}">#}
+        {#            <div class="float-right d-none d-sm-inline">#}
+        {#                <b>{% trans 'Jazzmin version' %}</b> {% get_jazzmin_version %}#}
+        {#            </div>#}
+        {#            {% autoescape off %}#}
+        {#                <strong>{% trans 'Copyright' %} &copy; {% now 'Y' %} {{ jazzmin_settings.copyright }}.</strong> {% trans 'All rights reserved.' %}#}
+        {#            {% endautoescape %}#}
+        {#        </footer>#}
+        {% if jazzmin_settings.show_ui_builder %}
+            {#            {% include 'jazzmin/includes/ui_builder_panel.html' %}#}
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{#</div>#}
+
+{% if jazzmin_settings.show_ui_builder %}
+    {#<div id="codeBox" class="modal fade" role="dialog">#}
+    {#    <div class="modal-dialog">#}
+    {#        <div class="modal-content">#}
+    {#            <div class="modal-header">#}
+    {#                <h4 class="modal-title">{% trans 'UI Configuration' %}</h4>#}
+    {#                <button type="button" class="close" data-dismiss="modal">&times;</button>#}
+    {#            </div>#}
+    {#            <div class="modal-body">#}
+    {#                <p>{% trans 'Copy this info your settings file to persist these UI changes' %}</p>#}
+    {#                <pre><code></code></pre>#}
+    {#            </div>#}
+    {#            <div class="modal-footer">#}
+    {#                <button type="button" class="btn {{ jazzmin_ui.button_classes.danger }}" data-dismiss="modal">{% trans 'Close' %}</button>#}
+    {#            </div>#}
+    {#        </div>#}
+    {##}
+    {#    </div>#}
+    {#</div>#}
+{% endif %}
+
+<!-- jQuery -->
+<script src="{% static "admin/js/vendor/jquery/jquery.js" %}"></script>
+<!-- Bootstrap 4 -->
+{#<script src="{% static "vendor/bootstrap/js/bootstrap.min.js" %}"></script>#}
+<!-- AdminLTE App -->
+{#<script src="{% static "vendor/adminlte/js/adminlte.min.js" %}"></script>#}
+<!-- Django customisations -->
+<script src="{% static "jazzmin/js/main.js" %}"></script>
+<script src="https://unpkg.com/htmx.org@1.9.11"
+        integrity="sha384-0gxUXCCR8yv9FM2b+U3FDbsKthCI66oH5IA9fHppQq9DDMHuMauqq1ZHBpJxQ0J0"
+        crossorigin="anonymous"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js"></script>
+
+
+{% if jazzmin_settings.custom_js %}
+    <script src="{% static jazzmin_settings.custom_js %}"></script>
+{% endif %}
+
+{% if jazzmin_settings.show_ui_builder %}
+    <script>
+        window.ui_changes = {{ jazzmin_ui.raw|as_json|safe }};
+    </script>
+    {#<script src="{% static "jazzmin/js/ui-builder.js" %}"></script>#}
+{% endif %}
+<script>
+    $(function () {
+
+
+        // Add bottom spacing if reached bottom,
+        // to avoid footer overlapping
+        // -------------------------
+
+        $(window).scroll(function () {
+            if ($(window).scrollTop() + $(window).height() > $(document).height() - 40) {
+                $('.fab-menu-bottom-left, .fab-menu-bottom-right').addClass('reached-bottom');
+            } else {
+                $('.fab-menu-bottom-left, .fab-menu-bottom-right').removeClass('reached-bottom');
+            }
+        });
+
+
+        // Affix
+        // -------------------------
+
+        // Left alignment
+
+
+        // Right alignment
+        {#$('#fab-menu-affixed-demo-right').affix({#}
+        {#    offset: {#}
+        {#        top: $('#fab-menu-affixed-demo-right').offset().top - 20#}
+        {#    }#}
+        {# });#}
+
+    });
+
+</script>
+
+{% block extrajs %}{% endblock %}
+{% block extra_js %}{% endblock %}
+</body>
+</html>

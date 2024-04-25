@@ -1,0 +1,35 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+{#{% admin_reorder %}#}
+{#{% block extrastyle %}{{ block.super }}#}
+{#    <link rel="stylesheet" type="text/css" href="{% static "admin/css/dashboard.css" %}"/>{% endblock %}#}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
+
+{#{% block breadcrumbs %}{% endblock %}#}
+
+{% block content_title %}{% if title %}
+    <h4>{{ title }}
+        <small>Good day, {% firstof user.get_short_name user.get_username|capfirst %}</small>
+    </h4>{% endif %}
+{% endblock %}
+
+{% block  object-tools %} {% endblock %}
+{% block content %}
+    <div class="module" id="recent-actions-module">
+        {#        <h2>{% translate 'Recent actions' %}</h2>#}
+        <h5>{% translate 'My recent actions' %}</h5>
+{#        {% include 'admin/theme/my_activity.html' %}#}
+    </div>
+
+
+
+
+
+{% endblock %}
+
+{% block sidebar %}
+
+{% endblock %}
